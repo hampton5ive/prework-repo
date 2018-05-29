@@ -13,9 +13,11 @@ public class Hashing {
         int[] arr = {2, 7, 11, 15};
         int[] indices = twoSum(arr, 9);
 
-        String s = "abcabcbb";
-        int len = lengthOfLongestSubstring(s);
-
+        String s = "abcanmzxyd";
+        //int len = lengthOfLongestSubstring(s);
+        String str = "pwwkew";
+        int length = lengthOfLongestSubstr(str);
+        System.out.println(length);
     }
 
     public static int[] twoSum(final int[] A, int B) {
@@ -72,40 +74,6 @@ public class Hashing {
     }
 
     public static int lengthOfLongestSubstring(String A) {
-        //region myattempt
-        /*char[] a = A.toCharArray();
-        // char is primitive so you can't do Arrays.asList(a)
-        List<Character> charList = new ArrayList<>();
-        for(int i =0; i < a.length; i++) {
-            charList.add(a[i]);
-        }
-        HashSet<Character> seenSet = new HashSet<Character>(charList);
-        String longestSubstr = "";
-        String currentSubstr = "";
-        int startIndex = 0;
-        for (int i=0; i < A.length(); i++) {
-            char currChar = A.charAt(i);
-            if (!seenSet.contains(currChar)) {
-                seenSet.add(currChar);
-            } else {
-                // start set over, compare currentSubstr to longestSubstr, start str over
-                seenSet.clear();
-                seenSet.add(currChar);
-                currentSubstr = A.substring(startIndex, i);
-                if (currentSubstr.length() > longestSubstr.length()) {
-                    longestSubstr = currentSubstr;
-                }
-                startIndex = i;
-                // start over as far back as you can
-            }
-        }
-
-        currentSubstr = A.substring(startIndex, A.length());
-        if (currentSubstr.length() > longestSubstr.length()) {
-            longestSubstr = currentSubstr;
-        }
-        return longestSustr.length();*/
-        //endregion myattempt
         HashSet<Character> hashSet = new HashSet<Character>();
         int maxCount = 0;
         int start = 0;
@@ -119,6 +87,42 @@ public class Hashing {
         }
 
         return maxCount;
+    }
+
+    public static int lengthOfLongestSubstr(String A) {
+        // used to track distinct characters
+        HashSet<Character> map = new HashSet<Character>();
+        int l = 0;
+        int r = 0;
+
+        int maxLen = 0;
+
+        // optional: keep track of the substring with max length
+         String str = "";
+
+        while(r < A.length()) {
+            Character c = A.charAt(r);
+            if(map.contains(c)) {
+                // remove duplicate character from the map
+                map.remove(A.charAt(l));
+                // shrink window
+                l++;
+            } else {
+                // add character to the map
+                map.add(c);
+                // increase the window
+                r++;
+                // optional: update with the substring with max length
+                 if (r - l > maxLen) {
+                 	str = A.substring(l, r);
+                 }
+                // is the substring longer?
+                maxLen = Math.max(maxLen, r - l);
+            }
+        }
+
+        System.out.println(str);
+        return maxLen;
     }
 
     private static int findIndex2(int i, int otherNum, int[] a) {

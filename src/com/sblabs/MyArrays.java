@@ -4,9 +4,9 @@ import java.util.ArrayList;
 /**
  * Created by alextam on 5/28/18.
  */
-public class Arrays {
+public class MyArrays {
     public static void main(String[] args) {
-        Arrays a = new Arrays();
+        MyArrays a = new MyArrays();
     }
 
     /*Given a non-negative number represented as an array of digits,

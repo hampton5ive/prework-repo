@@ -1,9 +1,11 @@
 package com.sblabs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 /**
  * Created by alextam on 5/20/18.
  */
@@ -18,6 +20,42 @@ public class Hashing {
         String str = "pwwkew";
         int length = lengthOfLongestSubstr(str);
         System.out.println(length);
+
+        String sentence = "A couple of questions.  How is the question of a couple games question";
+        System.out.println(firstRepeateWord(sentence));
+
+        Scanner scanner = new Scanner(System.in);
+        String numTCstr = scanner.nextLine();
+        int numTC = Integer.parseInt(numTCstr);
+        Integer[] tc = new Integer[numTC];
+        for (int i= 0; i < numTC; i++) {
+            String currInput = scanner.nextLine();
+//System.out.println(currInput);
+            if (currInput.length() % 2 != 0) {
+                tc[i] = -1;
+            } else {
+                String s1 = currInput.substring(0, currInput.length() / 2);
+                String s2 = currInput.substring(currInput.length() / 2);
+                tc[i] = countDiff(s1, s2);
+            }
+        }
+        for (int i=0; i < numTC; i++) {
+            System.out.println(tc[i]);
+        }
+    }
+
+    public static int countDiff(String s1, String s2) {
+        char[] sort1 = s1.toCharArray();
+        Arrays.sort(sort1);
+        char[] sort2 = s2.toCharArray();
+        Arrays.sort(sort2);
+        int num = 0;
+        for (int i = 0; i < s1.length(); i++) {
+            if (sort1[i] != sort2[i]) {
+                num++;
+            }
+        }
+        return num;
     }
 
     public static int[] twoSum(final int[] A, int B) {
@@ -131,5 +169,24 @@ public class Hashing {
                 return x;
         }
         return -2;
+    }
+
+    private static String firstRepeateWord(String s) {
+        String[] words = s.split("\\s");
+        HashMap<String, Integer> wordToIndex = new HashMap<String, Integer>();
+        for (int i=0; i < words.length; i++) {
+            String stripped = words[i].replaceAll("[^A-Za-z0-9]", "");
+            words[i] = stripped;
+            wordToIndex.put(stripped, i);
+        }
+        for(int i=0; i < words.length; i++) {
+            if (wordToIndex.containsKey(words[i])) {
+                Integer index = wordToIndex.get(words[i]);
+                if (i != index) {
+                    return words[i];
+                }
+            }
+        }
+        return null;
     }
 }

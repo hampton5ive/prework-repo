@@ -2,10 +2,18 @@ package com.sblabs;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import java.util.Stack;
 public class Graphs {
+
+    enum Color {
+        WHITE, GREY;
+    }
 
     public static void main(String[] args) {
         TreeNode A = new TreeNode(3);
@@ -18,7 +26,93 @@ public class Graphs {
         twenty.left = fifteen;
         twenty.right = seven;
         int[][] result = levelOrder(A);
-        boolean resultBool = true;
+
+        Map<String, List<String>> graphMap = new HashMap<String, List<String>>();
+
+        List<String> zeroEdges = new ArrayList<String>();
+        zeroEdges.add("1");
+
+        List<String> oneEdges = new ArrayList<String>();
+        oneEdges.add("0");
+        oneEdges.add("2");
+        oneEdges.add("3");
+
+        List<String> twoEdges = new ArrayList<String>();
+        twoEdges.add("1");
+        twoEdges.add("3");
+
+        List<String> threeEdges = new ArrayList<String>();
+        threeEdges.add("1");
+        threeEdges.add("2");
+
+
+        graphMap.put("0", zeroEdges);
+        graphMap.put("1", oneEdges);
+        graphMap.put("2", twoEdges);
+        graphMap.put("3", threeEdges);
+
+        // 0, 1, 2, 3
+        bfs(graphMap, "0");
+
+        // 0, 1, 3, 2
+        dfs(graphMap, "0");
+    }
+
+    static void bfs(Map<String, List<String>> graph, String startingValue) {
+        Map<String, Boolean> seenMap = new HashMap<String, Boolean>();
+        Iterator<String> keysI = graph.keySet().iterator();
+        while(keysI.hasNext()) {
+            String key = keysI.next();
+            seenMap.put(key, false);
+        }
+        Queue<String> q = new LinkedList<String>();
+        q.offer(startingValue);
+        seenMap.put(startingValue, true);
+        System.out.println(startingValue);
+        while(!q.isEmpty()) {
+            String head = q.poll();
+            List<String> edges = graph.get(head);
+            for (String edge: edges) {
+                boolean visitedVertex = seenMap.get(edge);
+                if (!visitedVertex) {
+                    q.offer(edge);
+                    seenMap.put(edge, true);
+                    System.out.println(edge);
+                }
+            }
+        }
+    }
+
+    static void dfs(Map<String, List<String>> graph, String startingValue) {
+        Map<String, Color> visitMap = new HashMap<String, Color>();
+        /*visitMap.put("0", Color.WHITE);
+        visitMap.put("1", Color.WHITE);
+        visitMap.put("2", Color.WHITE);
+        visitMap.put("3", Color.WHITE);*/
+        Iterator<String> keysI = graph.keySet().iterator();
+        while(keysI.hasNext()) {
+            String key = keysI.next();
+            visitMap.put(key, Color.WHITE);
+        }
+
+        Stack<String> s = new Stack<String>();
+        s.push(startingValue);
+
+        while(!s.isEmpty()) {
+            String str = s.pop();
+            // if this vertice is unvisited
+            //      1.  visit it
+            //      2.  push all its edges
+            if (visitMap.get(str) == Color.WHITE) {
+                System.out.println(str);
+                visitMap.put(str, Color.GREY);
+
+                List<String> edges = graph.get(str);
+                for (String edge: edges) {
+                    s.push(edge);
+                }
+            }
+        }
     }
 
     static class TreeNode {
@@ -214,6 +308,7 @@ public class Graphs {
         }
         return count;
     }
+    // i = row, j = col, m is upper row bound, n is upper col bound
     public void dfs(ArrayList<String>A,int i,int j,int m,int n,boolean[][]visited)
     {
         if(i<0 || j<0 || i>=m || j>=n)
@@ -221,9 +316,13 @@ public class Graphs {
         if(A.get(i).charAt(j)=='O' || visited[i][j])
             return;
         visited[i][j]=true;
+        // bottom
         dfs(A,i+1,j,m,n,visited);
+        // right
         dfs(A,i,j+1,m,n,visited);
+        // top
         dfs(A,i-1,j,m,n,visited);
+        // left
         dfs(A,i,j-1,m,n,visited);
     }
 

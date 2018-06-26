@@ -7,6 +7,17 @@ import java.util.ArrayList;
 public class MyArrays {
     public static void main(String[] args) {
         MyArrays a = new MyArrays();
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        list.add(0);
+        list.add(0);
+        list.add(0);
+        list.add(1);
+        list.add(1);
+        list.add(2);
+        list.add(2);
+        list.add(3);
+        System.out.println(a.removeDuplicates(list));
+        boolean t = true;
     }
 
     /*Given a non-negative number represented as an array of digits,
@@ -142,5 +153,17 @@ public class MyArrays {
             sum+=i;
         }
         return sum;
+    }
+
+    public int removeDuplicates(ArrayList<Integer> a) {
+        int numDuplicates = 0;
+        for (int i=0; i < a.size()-1; i++) {
+            if (a.get(i).equals(a.get(i+1))) {
+                a.set(i, null);
+                numDuplicates++;
+            }
         }
+        return a.size()-numDuplicates;
+    }
+
 }

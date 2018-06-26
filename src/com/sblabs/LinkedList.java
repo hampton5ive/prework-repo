@@ -85,8 +85,6 @@ public class LinkedList {
         return A;
     }
 
-
-
     public static ListNode deleteDuplicates(ListNode A) {
         ListNode node = A;
         ListNode current = A;
@@ -103,7 +101,38 @@ public class LinkedList {
         return A;
     }
 
-    public static ListNode addTwoNumbers(ListNode A, ListNode B) {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int carry =0;
+
+        // USED TO CONSTRUCT RESULT LL PROPERLY
+        ListNode newHead = new ListNode(0);
+        ListNode p1 = l1, p2 = l2, p3=newHead;
+
+        while(p1 != null || p2 != null){
+            if(p1 != null){
+                carry += p1.val;
+                p1 = p1.next;
+            }
+
+            if(p2 != null){
+                carry += p2.val;
+                p2 = p2.next;
+            }
+
+            // REMEMBER THIS ORDER, we need this to get the pointers right
+            p3.next = new ListNode(carry%10);
+            p3 = p3.next;
+            carry /= 10;
+        }
+
+        if(carry==1)
+            p3.next=new ListNode(1);
+
+        // RETURN PROPER HEAD WITHOUT THE DUMMY
+        return newHead.next;
+    }
+
+    /*public static ListNode addTwoNumbers(ListNode A, ListNode B) {
         //region myattempt
         ListNode result = null;
         ListNode prev = null;
@@ -122,84 +151,7 @@ public class LinkedList {
             smaller = A;
         }
         return addLists(larger, smaller);
-        /*if (!reversed.isEmpty()) {
-            result = reversed.pop();
-            prev = result;
-        }
-        System.out.println(prev.val);
-        while(!reversed.isEmpty()) {
-            ListNode node = reversed.pop();
-            prev.next = node;
-            prev = node;
-        }
-        return result;*/
-
-        //endregion myattempt
-        /*ListNode lastNode = null;
-        ListNode newList = null;
-        int carry  =0;
-        int addendum = 0;
-        while(A!=null || B!=null){
-
-            int total = carry;
-            if(A!=null){
-                total+=A.val;
-            }
-            if(B!=null){
-                total+=B.val;
-            }
-
-            addendum = total%10;
-            carry = total/10;
-            if(lastNode==null){
-                lastNode =  new ListNode(addendum);
-                newList = lastNode;
-            }else{
-                lastNode.next = new ListNode(addendum);
-                lastNode = lastNode.next;
-
-            }
-            if(A!=null)
-                A = A.next;
-
-            if(B!=null)
-                B = B.next;
-        }
-        if(carry>0)
-            lastNode.next = new ListNode(carry);
-
-        return newList;*/
     }
-
-    // my helper for add lists
-    /*public static Stack<ListNode> addLists(ListNode larger, ListNode smaller) {
-        Stack<ListNode> reversedResult = new Stack<ListNode>();
-        boolean carry = false;
-        while(larger != null) {
-            int smallerVal = 0;
-            if (smaller != null) {
-                smallerVal = smaller.val;
-            }
-            int sum = larger.val + smallerVal;
-            if (carry) {
-                sum++;
-                carry = false;
-            }
-            if (sum > 9) {
-                carry = true;
-                sum = sum - 10;
-            }
-            reversedResult.push(new ListNode(sum));
-            larger = larger.next;
-            if (smaller != null) {
-                smaller = smaller.next;
-            }
-        }
-        if (carry) {
-            reversedResult.push(new ListNode(1));
-        }
-        return reversedResult;
-    }*/
 
     public static ListNode addLists(ListNode larger, ListNode smaller) {
         ListNode node = null;
@@ -249,7 +201,7 @@ public class LinkedList {
             A = A.next;
         }
         return count;
-    }
+    }*/
 
     static void printList(ListNode temp) {
         while(temp != null) {
